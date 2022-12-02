@@ -7,7 +7,7 @@ function adduser(event){
         Email:document.getElementById("email").value,
         Phone:document.getElementById("phone").value
     }
-    axios.post("https://crudcrud.com/api/0826156a402f4e9190dfbc15d4f3fe88/TestData",obj)
+    axios.post("https://crudcrud.com/api/ced1b52b9abe4eb0914e94c135f8b0a4/TestData",obj)
     .then((response) =>{
         addusertoUI(response.data);
         })
@@ -19,7 +19,7 @@ function adduser(event){
 }
 //fetching data from crudcrud on refreshing
 window.onload=function load(){
-    axios.get('https://crudcrud.com/api/0826156a402f4e9190dfbc15d4f3fe88/TestData')
+    axios.get('https://crudcrud.com/api/ced1b52b9abe4eb0914e94c135f8b0a4/TestData')
                 .then((response) =>{
                     for(let i=0;i<response.data.length;i++){
                         addusertoUI(response.data[i]);
@@ -38,18 +38,31 @@ function addusertoUI(obj){
        row.innerHTML=`<td>${obj.Name}</td>
                      <td>${obj.Email}</td>
                      <td>${obj.Phone}</td>
-                     <td><button onclick="edit('${obj.Email}')">Edit</button></td>
+                     <td><button onclick="edit('${obj._id}','${obj}')">Edit</button></td>
                      <td><button onclick="remove('${obj._id}')">Delete</button></td>`;
                      tbody.appendChild(row);
 }
-function edit(key){
-    
-}
 
+//edit functionality
+function edit(key){
+    axios.get(`https://crudcrud.com/api/ced1b52b9abe4eb0914e94c135f8b0a4/TestData/${key}`)
+    .then((response)=>{
+        document.getElementById('name').value=response.data.Name;
+        document.getElementById('email').value=response.data.Email;
+        document.getElementById('phone').value=response.data.Phone;
+    })
+    .then(()=>{
+        remove(key);
+        const parent=document.getElementById("userDetails");
+        const child=document.getElementById(key);
+        parent.removeChild(child);
+    })
+    .catch((err)=>console.log(err));
+}    
 
 //delete functionality
 function remove(key){
-    axios.delete(`https://crudcrud.com/api/0826156a402f4e9190dfbc15d4f3fe88/TestData/${key}`)
+    axios.delete(`https://crudcrud.com/api/ced1b52b9abe4eb0914e94c135f8b0a4/TestData/${key}`)
         const parent=document.getElementById("userDetails");
         const child=document.getElementById(key);
         parent.removeChild(child);
