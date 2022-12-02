@@ -34,28 +34,23 @@ function addusertoUI(obj){
         let email=obj.Email;
        const tbody=document.getElementById("userDetails");
        const row=document.createElement('tr');
-       row.id=obj.Email;
+       row.id=obj._id;
        row.innerHTML=`<td>${obj.Name}</td>
                      <td>${obj.Email}</td>
                      <td>${obj.Phone}</td>
                      <td><button onclick="edit('${obj.Email}')">Edit</button></td>
-                     <td><button onclick="remove('${obj.Email}')">Delete</button></td>`;
+                     <td><button onclick="remove('${obj._id}')">Delete</button></td>`;
                      tbody.appendChild(row);
 }
 function edit(key){
-    let jsonobj=localStorage.getItem(key);
-    let obj=JSON.parse(jsonobj);
-    console.log(obj);
-    document.getElementById("name").value=obj.Name;
-    document.getElementById("email").value=obj.Email;
-    document.getElementById("phone").value=obj.Phone;
-    const parent=document.getElementById("userDetails");
-    const child=document.getElementById(key);
-    parent.removeChild(child);
+    
 }
+
+
+//delete functionality
 function remove(key){
-    localStorage.removeItem(key);
-    const parent=document.getElementById("userDetails");
-    const child=document.getElementById(key);
-    parent.removeChild(child);
+    axios.delete(`https://crudcrud.com/api/0826156a402f4e9190dfbc15d4f3fe88/TestData/${key}`)
+        const parent=document.getElementById("userDetails");
+        const child=document.getElementById(key);
+        parent.removeChild(child);
 }
